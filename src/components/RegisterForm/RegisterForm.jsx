@@ -20,6 +20,7 @@ import { IconButton } from "@material-ui/core";
 import { ErrorMessage } from '@hookform/error-message';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
         bodyBorder: {
@@ -115,6 +116,9 @@ const RegisterForm = () => {
         </AppBar>        
         <Container  component="main" maxWidth="sm">
             <CssBaseline />
+            <div >
+                    {error && <Alert style={{marginTop: "20%"}} severity="error" onClose={() => setError(false)}>You have entered invalid data, please try again.</Alert>}
+            </div>
             <Typography className={classes.topic} component="h1" variant="inherit">
                 Sign Up
             </Typography>
