@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     header:{
         display: "flex",
         justifyContent: "space-between",
-        marginTop: "10%",
+        marginTop: "15%",
         width: "100%"
     },
     tableStyle: {
