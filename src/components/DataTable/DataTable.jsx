@@ -213,7 +213,7 @@ export default function DataTable() {
     <div className={classes.bodyBorder}>
     <AppBar position="fixed" style={{boxShadow : "none"}}>
         <Toolbar variant="dense" className={classes.navbar}>
-            <img width="4%" alt="LS-Technology" src="https://scontent.ftlv6-1.fna.fbcdn.net/v/t1.6435-9/67440699_447990479132665_1473312299518263296_n.png?_nc_cat=104&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=tIyTSALWSRUAX-_gdL8&_nc_ht=scontent.ftlv6-1.fna&oh=6f4c9d34b7b322faa31693cb4ede52a6&oe=61818903"/>
+            <img height="50px" alt="LS-Technology" src="https://scontent.ftlv6-1.fna.fbcdn.net/v/t1.6435-9/67440699_447990479132665_1473312299518263296_n.png?_nc_cat=104&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=tIyTSALWSRUAX-_gdL8&_nc_ht=scontent.ftlv6-1.fna&oh=6f4c9d34b7b322faa31693cb4ede52a6&oe=61818903"/>
             <div className={classes.userStatus}>
                 <div className={classes.avatarNavbar}>
             <Avatar 
