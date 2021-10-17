@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { TextField } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles,
+  withStyles,
+  Theme,
+  createStyles,
+} from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
@@ -111,6 +116,9 @@ const useStyles = makeStyles((theme) => ({
   messageError: {
     margin: "0",
     color: "red",
+  },
+  tableHeader: {
+    color: "gray",
   },
 }));
 
@@ -224,52 +232,43 @@ export default function DataTable() {
   const fields = [
     {
       id: "avatar",
-      headerClassName: "headers",
     },
     {
       id: "firstName",
       label: "First Name",
-      headerClassName: "headers",
       width: 150,
     },
     {
       id: "lastName",
       label: "Last Name",
-      headerClassName: "headers",
       width: 150,
     },
     {
       id: "phone",
       label: "Phone",
-      headerClassName: "headers",
       width: 150,
     },
     {
       id: "address",
       label: "Address",
-      headerClassName: "headers",
       width: 220,
     },
     {
       id: "role",
       label: "Role",
-      headerClassName: "headers",
       width: 220,
     },
     {
       id: "startDate",
       label: "Start Date",
-      headerClassName: "headers",
       width: 150,
     },
     {
       id: "edit",
-      headerClassName: "headers",
       width: 10,
     },
     {
       id: "remove",
-      headerClassName: "headers",
       width: 10,
     },
   ];
@@ -462,15 +461,12 @@ export default function DataTable() {
 
           <div className={classes.tableStyle}>
             <Paper sx={{ width: "100%" }}>
-              <TableContainer sx={{ maxHeight: 500 }}>
+              <TableContainer sx={{ maxHeight: 400 }}>
                 <Table>
                   <TableHead>
                     <TableRow>
                       {fields.map((field) => (
-                        <TableCell
-                          key={field.id}
-                          style={{ top: 57, minWidth: field.minWidth }}
-                        >
+                        <TableCell style={{ color: "gray" }} key={field.id}>
                           {field.label}
                         </TableCell>
                       ))}
