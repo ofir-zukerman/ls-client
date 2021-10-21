@@ -42,6 +42,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import Popup from "./Popup";
 
 const useStyles = makeStyles((theme) => ({
   bodyBorder: {
@@ -74,11 +75,7 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "90%",
     },
   },
-  divButton: {
-    display: "flex",
-    justifyContent: "center",
-    marginTop: "5%",
-  },
+
   button: {
     margin: theme.spacing(1),
     width: "28%",
@@ -87,11 +84,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "end",
     marginTop: "5%",
-  },
-  popupTitle: {
-    display: "flex",
-    justifyContent: "space-between",
-    marginTop: "30px",
   },
   userStatus: {
     display: "flex",
@@ -104,12 +96,14 @@ const useStyles = makeStyles((theme) => ({
   iconNavbar: {
     marginTop: "5px",
   },
-  messageError: {
-    margin: "0",
-    color: "red",
-  },
+
   tableHeader: {
     color: "gray",
+  },
+  popupTitle: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginTop: "30px",
   },
 }));
 
@@ -119,14 +113,8 @@ const DataTable = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
-  const [role, setRole] = useState("");
-  const roles = ["HR", "Devops", "Software Engineer", "QA"];
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors: formErrors, isDirty, isValid },
-  } = useForm({ mode: "onChange" });
+  const [selectedEmployee, setSelectedEmployee] = useState();
+  const { reset } = useForm();
 
   const classes = useStyles();
 
@@ -139,17 +127,17 @@ const DataTable = () => {
   };
 
   const handleClosePopup = () => {
+    setSelectedEmployee(null);
     setOpen(false);
   };
 
-  const handleSelectChange = (event) => {
-    setRole(event.target.value);
-  };
+  const handleEditEmployee = (employee) => {
+    setSelectedEmployee(employee);
 
-  const handleEditEmployee = async (employeeId) => {
-    handleOpenPopup();
-  };
+    setOpen(true);
 
+    //handleOpenPopup();
+  };
   const handleRemoveEmployee = async (employeeId) => {
     try {
       const removedEmployee = await axios.post(DELETE_EMPLOYEE_API, {
@@ -167,17 +155,25 @@ const DataTable = () => {
     }
   };
 
-  const onSubmitNewEmployee = async (newEmployee) => {
+  const onSubmitEmployee = async (newEmployee) => {
     try {
-      newEmployee.startDate = new Date().toDateString();
-      newEmployee.id = uuidv4();
-
       setEmployees([...employees, newEmployee]);
 
       // update mongodb add new employee logic
-      await axios.post(ADD_NEW_EMPOLOYEE_API, { data: newEmployee });
-
+      let respo = await axios.post(ADD_NEW_EMPOLOYEE_API, {
+        data: newEmployee,
+      });
+      if (respo.status == 200) {
+        let indx = employees.findIndex((i) => i.id == respo.data.id);
+        if (indx) {
+          employees[indx] = respo.data;
+          setEmployees(employees);
+        } else {
+          setEmployees([...employees, respo.data]);
+        }
+      }
       reset({
+        id: "",
         firstName: "",
         lastName: "",
         phone: "",
@@ -311,140 +307,14 @@ const DataTable = () => {
                 </Button>
               </div>
             </div>
-            <BootstrapDialog
-              onClose={handleClosePopup}
-              aria-labelledby="customized-dialog-title"
-              open={open}
-            >
-              <DialogContent dividers>
-                <Container maxWidth="sm">
-                  <form onSubmit={handleSubmit(onSubmitNewEmployee)} noValidate>
-                    <Container maxWidth="sm">
-                      <div className={classes.popupTitle}>
-                        <Typography variant="h6" gutterBottom component="div">
-                          Add Employee
-                        </Typography>
-                        <IconButton>
-                          <CloseIcon onClick={handleClosePopup} />
-                        </IconButton>
-                      </div>
 
-                      <TextField
-                        variant="standard"
-                        margin="normal"
-                        fullWidth
-                        id="firstName"
-                        type="firstName"
-                        label="First Name"
-                        name="firstName"
-                        autoComplete="firstName"
-                        {...register("firstName", {
-                          required: "This field is required.",
-                        })}
-                      ></TextField>
-                      {formErrors.firstName && (
-                        <span className={classes.messageError}>
-                          {formErrors.firstName.message}
-                        </span>
-                      )}
-                      <TextField
-                        variant="standard"
-                        margin="normal"
-                        fullWidth
-                        id="lastName"
-                        type="lastName"
-                        label="Last Name"
-                        name="lastName"
-                        autoComplete="lastName"
-                        {...register("lastName", {
-                          required: "This field is required.",
-                        })}
-                      ></TextField>
-                      {formErrors.lastName && (
-                        <span className={classes.messageError}>
-                          {formErrors.lastName.message}
-                        </span>
-                      )}
-                      <TextField
-                        variant="standard"
-                        margin="normal"
-                        fullWidth
-                        id="phone"
-                        type="number"
-                        label="Phone"
-                        name="phone"
-                        autoComplete="phone"
-                        {...register("phone", {
-                          required: "This field is required.",
-                        })}
-                      ></TextField>
-                      {formErrors.phone && (
-                        <span className={classes.messageError}>
-                          {formErrors.phone.message}
-                        </span>
-                      )}
-                      <TextField
-                        variant="standard"
-                        margin="normal"
-                        fullWidth
-                        id="address"
-                        type="address"
-                        label="Address"
-                        name="address"
-                        autoComplete="address"
-                        {...register("address", {
-                          required: "This field is required.",
-                        })}
-                      ></TextField>
-                      {formErrors.address && (
-                        <span className={classes.messageError}>
-                          {formErrors.address.message}
-                        </span>
-                      )}
-                      <FormControl variant="standard" fullWidth>
-                        <InputLabel id="demo-simple-select-standard-label">
-                          Role
-                        </InputLabel>
-                        <Select
-                          labelId="demo-simple-select-standard-label"
-                          id="demo-simple-select-standard"
-                          defaultValue={role}
-                          onChange={handleSelectChange}
-                          label="Role"
-                          {...register("role", {
-                            required: "This field is required.",
-                          })}
-                        >
-                          <MenuItem value="">
-                            <em>None</em>
-                          </MenuItem>
-                          {roles.map((roleSelect) => (
-                            <MenuItem value={roleSelect}>{roleSelect}</MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                      {formErrors.role && (
-                        <span className={classes.messageError}>
-                          {formErrors.role.message}
-                        </span>
-                      )}
-                      <div className={classes.divButton}>
-                        <Button
-                          className={classes.button}
-                          type="submit"
-                          variant="contained"
-                          color="primary"
-                          style={{ textTransform: "none" }}
-                          disabled={!isDirty || !isValid}
-                        >
-                          Add
-                        </Button>
-                      </div>
-                    </Container>
-                  </form>
-                </Container>
-              </DialogContent>
-            </BootstrapDialog>
+            <Popup
+              popupState={open}
+              setPopupState={setOpen}
+              onPopupClose={handleClosePopup}
+              employee={selectedEmployee}
+              onSubmit={onSubmitEmployee}
+            />
           </div>
 
           <div className={classes.tableStyle}>
@@ -474,8 +344,8 @@ const DataTable = () => {
                                 <TableCell key={fieldName}>
                                   <IconButton>
                                     <EditOutlinedIcon
-                                      onClick={async () =>
-                                        await handleEditEmployee(employeeId)
+                                      onClick={() =>
+                                        handleEditEmployee(employee)
                                       }
                                     />
                                   </IconButton>
@@ -519,4 +389,4 @@ const DataTable = () => {
   );
 };
 
-export default LoginForm;
+export default DataTable;
