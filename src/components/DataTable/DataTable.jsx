@@ -43,15 +43,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  "& .MuDialogContent-root": {
-    padding: theme.spacing(2),
-  },
-  "& .MuDialogActions-root": {
-    padding: theme.spacing(5),
-  },
-}));
-
 const useStyles = makeStyles((theme) => ({
   bodyBorder: {
     border: "4px solid white",
@@ -122,7 +113,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function DataTable() {
+const DataTable = () => {
   const [user, setUser] = useState(null);
   const [employees, setEmployees] = useState([]);
   const [error, setError] = useState(false);
@@ -168,9 +159,9 @@ export default function DataTable() {
       if (!removedEmployee)
         throw new Error(`${employeeId} didnt removed succesfully`);
 
-      const newList = employees.filter((id) => id !== employeeId);
+      const newList = employees.filter((emp) => emp.id !== employeeId);
 
-      setEmployees([...newList]);
+      setEmployees(newList);
     } catch (err) {
       setError(err.message);
     }
@@ -178,8 +169,6 @@ export default function DataTable() {
 
   const onSubmitNewEmployee = async (newEmployee) => {
     try {
-      setLoading(true);
-
       newEmployee.startDate = new Date().toDateString();
       newEmployee.id = uuidv4();
 
@@ -196,7 +185,6 @@ export default function DataTable() {
         role: "",
       });
 
-      setLoading(false);
       setOpen(!open);
     } catch (err) {
       setError(err.message);
@@ -461,7 +449,7 @@ export default function DataTable() {
 
           <div className={classes.tableStyle}>
             <Paper sx={{ width: "100%" }}>
-              <TableContainer sx={{ maxHeight: 400 }}>
+              <TableContainer sx={{ width: "100%" }}>
                 <Table>
                   <TableHead>
                     <TableRow>
@@ -529,4 +517,6 @@ export default function DataTable() {
       </Container>
     </div>
   );
-}
+};
+
+export default LoginForm;
