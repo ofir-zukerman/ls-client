@@ -76,12 +76,14 @@ const Popup = (props) => {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors: formErrors, isDirty, isValid },
   } = useForm({ mode: "onChange" });
 
   const handleSelectChange = (event) => {
     setRole(event.target.value);
   };
+
   if (props.employee) {
     console.log(props);
     // setValue("firstName", props.employee.firstName);
@@ -89,6 +91,9 @@ const Popup = (props) => {
     setValue("startDate", props.employee.startDate);
 
     setValue("id", props.employee.id);
+  } else {
+    setValue("startDate", null);
+    setValue("id", null);
   }
 
   const classes = useStyles();
