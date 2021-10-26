@@ -135,8 +135,6 @@ const DataTable = () => {
     setSelectedEmployee(employee);
 
     setOpen(true);
-
-    //handleOpenPopup();
   };
   const handleRemoveEmployee = async (employeeId) => {
     try {
@@ -164,23 +162,18 @@ const DataTable = () => {
         data: newEmployee,
       });
       if (respo.status == 200) {
-        let indx = employees.findIndex((i) => i.id == respo.data.id);
-        if (indx) {
+        const indx = employees.findIndex((i) => i.id == respo.data.id);
+        console.log(`test ${indx}`);
+        if (indx > -1) {
+          console.log(`true ${indx}`);
           employees[indx] = respo.data;
           setEmployees(employees);
         } else {
+          console.log(`false ${indx}`);
           setEmployees([...employees, respo.data]);
         }
       }
-      reset({
-        id: "",
-        firstName: "",
-        lastName: "",
-        phone: "",
-        address: "",
-        role: "",
-      });
-
+      setSelectedEmployee("");
       setOpen(!open);
     } catch (err) {
       setError(err.message);
@@ -245,7 +238,7 @@ const DataTable = () => {
     {
       id: "startDate",
       label: "Start Date",
-      width: 150,
+      width: 220,
     },
     {
       id: "edit",

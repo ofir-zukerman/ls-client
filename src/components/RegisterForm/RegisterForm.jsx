@@ -77,6 +77,7 @@ const RegisterForm = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors: formErrors, isDirty, isValid },
   } = useForm({ mode: "onChange" });
 
