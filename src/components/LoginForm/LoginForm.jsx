@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -18,18 +17,12 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { InputAdornment } from "@material-ui/core";
 import { IconButton } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import { border, borderColor } from "@mui/system";
+import Navbar from "../Navbar/Navbar";
 
 const useStyles = makeStyles((theme) => ({
   bodyBorder: {
     border: "4px solid white",
     backgroundColor: "#F1F1F1",
-  },
-  navbar: {
-    boxShadow: "none",
-    backgroundColor: "white",
   },
   topic: {
     display: "flex",
@@ -106,17 +99,8 @@ const LoginForm = () => {
 
   return (
     <div className={classes.bodyBorder}>
-      <AppBar position="fixed" style={{ boxShadow: "none" }}>
-        <Toolbar variant="dense" className={classes.navbar}>
-          <img
-            height="50px"
-            alt="LS-Technology"
-            src="https://scontent.ftlv6-1.fna.fbcdn.net/v/t1.6435-9/67440699_447990479132665_1473312299518263296_n.png?_nc_cat=104&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=tIyTSALWSRUAX-_gdL8&_nc_ht=scontent.ftlv6-1.fna&oh=6f4c9d34b7b322faa31693cb4ede52a6&oe=61818903"
-          />
-        </Toolbar>
-      </AppBar>
+      <Navbar />
       <Container component="main" maxWidth="sm">
-        <CssBaseline />
         <div>
           {error && (
             <Alert

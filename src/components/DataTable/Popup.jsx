@@ -1,39 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { TextField } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import {
-  makeStyles,
-  withStyles,
-  Theme,
-  createStyles,
-} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
-import axios from "axios";
-
-import {
-  DATATABLE_EMPLOYEE_API,
-  ADD_NEW_EMPOLOYEE_API,
-  DELETE_EMPLOYEE_API,
-} from "../../consts";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useForm } from "react-hook-form";
-import { v4 as uuidv4 } from "uuid";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import { DialogContent } from "@mui/material";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
-import LogoutIcon from "@mui/icons-material/Logout";
-import localStorageService from "../../services/localStorage.service";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
-import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@mui/material/IconButton";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -61,13 +40,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "5%",
   },
 }));
-
-/*
-modalstate
-modalsetstate
-submit
-employee employee == null add 
-*/
 
 const Popup = (props) => {
   const [role, setRole] = useState("");
