@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   tableStyle: {
-    height: 600,
+    height: 375,
     marginTop: "5%",
     marginBottom: "5%",
     width: "100%",
@@ -114,7 +114,6 @@ const DataTable = () => {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState();
-  const { reset } = useForm();
 
   const classes = useStyles();
 
@@ -311,7 +310,7 @@ const DataTable = () => {
           </div>
 
           <div className={classes.tableStyle}>
-            <Paper sx={{ width: "100%" }}>
+            <Paper className={classes.paper}>
               <TableContainer sx={{ width: "100%" }}>
                 <Table>
                   <TableHead>

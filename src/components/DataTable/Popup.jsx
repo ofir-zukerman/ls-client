@@ -91,9 +91,15 @@ const Popup = (props) => {
     setValue("startDate", props.employee.startDate);
 
     setValue("id", props.employee.id);
+    setValue("firstName", props.employee.firstName);
+    setValue("lastName", props.employee.lastName);
+    setValue("address", props.employee.address);
+    setValue("phone", props.employee.phone);
+    setValue("role", props.employee.role);
   } else {
     setValue("startDate", null);
     setValue("id", null);
+    reset();
   }
 
   const classes = useStyles();
