@@ -99,8 +99,13 @@ const Popup = (props) => {
   } else {
     setValue("startDate", null);
     setValue("id", null);
-    reset();
   }
+
+  useEffect(() => {
+    if (!props.employee) {
+      reset();
+    }
+  }, [props.onPopupClose]);
 
   const classes = useStyles();
   console.log(props);
