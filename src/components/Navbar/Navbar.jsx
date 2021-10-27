@@ -27,7 +27,6 @@ const Navbar = () => {
           </Typography>
         </Toolbar>
       </AppBar>
-      ; )
     </div>
   );
 };
