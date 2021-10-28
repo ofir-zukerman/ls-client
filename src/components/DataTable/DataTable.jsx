@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { TextField } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import {
-  makeStyles,
-  withStyles,
-  Theme,
-  createStyles,
-} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
@@ -16,33 +10,14 @@ import {
   ADD_NEW_EMPOLOYEE_API,
   DELETE_EMPLOYEE_API,
 } from "../../consts";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import { useForm } from "react-hook-form";
-import { v4 as uuidv4 } from "uuid";
-import { styled } from "@mui/material/styles";
-import Dialog from "@mui/material/Dialog";
-import { DialogContent } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import AddIcon from "@mui/icons-material/Add";
-import CloseIcon from "@mui/icons-material/Close";
 import LogoutIcon from "@mui/icons-material/Logout";
 import localStorageService from "../../services/localStorage.service";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@mui/material/IconButton";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import Popup from "./Popup";
+import TableComponent from "./Table/TableComponent";
 
 const useStyles = makeStyles((theme) => ({
   bodyBorder: {
@@ -61,30 +36,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "15%",
     width: "100%",
   },
-  tableStyle: {
-    height: 375,
-    marginTop: "5%",
-    marginBottom: "5%",
-    width: "100%",
-    backgroundColor: "white",
-    "& .headers": {
-      color: "#539595",
-      display: "block",
-      width: "100%",
-      backgroundColor: "white",
-      fontSize: "90%",
-    },
-  },
-
-  button: {
-    margin: theme.spacing(1),
-    width: "28%",
-  },
-  divAddEmployeeButton: {
-    display: "flex",
-    justifyContent: "end",
-    marginTop: "5%",
-  },
   userStatus: {
     display: "flex",
     flexDirection: "row",
@@ -95,15 +46,6 @@ const useStyles = makeStyles((theme) => ({
   },
   iconNavbar: {
     marginTop: "5px",
-  },
-
-  tableHeader: {
-    color: "gray",
-  },
-  popupTitle: {
-    display: "flex",
-    justifyContent: "space-between",
-    marginTop: "30px",
   },
 }));
 
@@ -128,28 +70,6 @@ const DataTable = () => {
   const handleClosePopup = () => {
     setSelectedEmployee(null);
     setOpen(false);
-  };
-
-  const handleEditEmployee = (employee) => {
-    setSelectedEmployee(employee);
-
-    setOpen(true);
-  };
-  const handleRemoveEmployee = async (employeeId) => {
-    try {
-      const removedEmployee = await axios.post(DELETE_EMPLOYEE_API, {
-        data: employeeId,
-      });
-
-      if (!removedEmployee)
-        throw new Error(`${employeeId} didnt removed succesfully`);
-
-      const newList = employees.filter((emp) => emp.id !== employeeId);
-
-      setEmployees(newList);
-    } catch (err) {
-      setError(err.message);
-    }
   };
 
   const onSubmitEmployee = async (newEmployee) => {
@@ -205,50 +125,6 @@ const DataTable = () => {
 
   if (!user) window.location.href = "/";
 
-  const fields = [
-    {
-      id: "avatar",
-    },
-    {
-      id: "firstName",
-      label: "First Name",
-      width: 150,
-    },
-    {
-      id: "lastName",
-      label: "Last Name",
-      width: 150,
-    },
-    {
-      id: "phone",
-      label: "Phone",
-      width: 150,
-    },
-    {
-      id: "address",
-      label: "Address",
-      width: 220,
-    },
-    {
-      id: "role",
-      label: "Role",
-      width: 220,
-    },
-    {
-      id: "startDate",
-      label: "Start Date",
-      width: 220,
-    },
-    {
-      id: "edit",
-      width: 10,
-    },
-    {
-      id: "remove",
-      width: 10,
-    },
-  ];
-
   return (
     <div className={classes.bodyBorder}>
       <AppBar position="fixed" style={{ boxShadow: "none" }}>
@@ -274,107 +150,37 @@ const DataTable = () => {
       <Container component="main" maxWidth="lg">
         <div>
           <div className={classes.header}>
-            <Typography
-              className={classes.topic}
-              component="h1"
-              variant="inherit"
-            >
+            <Typography component="h1" variant="inherit">
               Managing Employees
             </Typography>
 
-            <div>
-              <div className={classes.divAddEmployeeButton}>
-                <Button
-                  variant="outlined"
-                  onClick={handleOpenPopup}
-                  style={{
-                    textTransform: "none",
-                    backgroundColor: "#656EFF",
-                    color: "white",
-                    paddingInline: "20px",
-                  }}
-                >
-                  <AddIcon style={{ width: "15" }} />
-                  Add Employee
-                </Button>
-              </div>
-            </div>
-
-            <Popup
-              popupState={open}
-              setPopupState={setOpen}
-              onPopupClose={handleClosePopup}
-              employee={selectedEmployee}
-              onSubmit={onSubmitEmployee}
-            />
+            <Button
+              onClick={handleOpenPopup}
+              style={{
+                textTransform: "none",
+                backgroundColor: "#656EFF",
+                color: "white",
+                padding: "2px 15px 2px 15px",
+              }}
+            >
+              <AddIcon style={{ width: "15" }} />
+              Add Employee
+            </Button>
           </div>
-
-          <div className={classes.tableStyle}>
-            <Paper className={classes.paper}>
-              <TableContainer sx={{ width: "100%" }}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      {fields.map((field) => (
-                        <TableCell style={{ color: "gray" }} key={field.id}>
-                          {field.label}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {employees.map((employee) => {
-                      const { id: employeeId } = employee;
-
-                      return (
-                        <TableRow hover key={employeeId}>
-                          {fields.map(({ id: fieldName }) => {
-                            const value = employee[fieldName];
-
-                            if (fieldName === "edit") {
-                              return (
-                                <TableCell key={fieldName}>
-                                  <IconButton>
-                                    <EditOutlinedIcon
-                                      onClick={() =>
-                                        handleEditEmployee(employee)
-                                      }
-                                    />
-                                  </IconButton>
-                                </TableCell>
-                              );
-                            } else if (fieldName === "remove") {
-                              return (
-                                <TableCell key={fieldName}>
-                                  <IconButton>
-                                    <DeleteForeverOutlinedIcon
-                                      onClick={async () =>
-                                        await handleRemoveEmployee(employeeId)
-                                      }
-                                    />
-                                  </IconButton>
-                                </TableCell>
-                              );
-                            } else if (fieldName === "avatar") {
-                              return (
-                                <TableCell key={fieldName}>
-                                  <Avatar />
-                                </TableCell>
-                              );
-                            } else {
-                              return (
-                                <TableCell key={fieldName}>{value}</TableCell>
-                              );
-                            }
-                          })}
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Paper>
-          </div>
+          <Popup
+            popupState={open}
+            setPopupState={setOpen}
+            onPopupClose={handleClosePopup}
+            employee={selectedEmployee}
+            onSubmit={onSubmitEmployee}
+          />
+          <TableComponent
+            employees={employees}
+            setSelectedEmployee={setSelectedEmployee}
+            setOpen={setOpen}
+            setEmployees={setEmployees}
+            setError={setError}
+          />
         </div>
       </Container>
     </div>

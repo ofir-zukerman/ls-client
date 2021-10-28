@@ -57,11 +57,7 @@ const Popup = (props) => {
   };
 
   if (props.employee) {
-    console.log(props);
-    // setValue("firstName", props.employee.firstName);
-    // setValue("lastName", props.employee.lastName);
     setValue("startDate", props.employee.startDate);
-
     setValue("id", props.employee.id);
     setValue("firstName", props.employee.firstName);
     setValue("lastName", props.employee.lastName);
@@ -101,6 +97,8 @@ const Popup = (props) => {
                   </IconButton>
                 </div>
 
+                <input type="hidden" {...register("id")} />
+
                 <TextField
                   variant="standard"
                   margin="normal"
@@ -119,7 +117,6 @@ const Popup = (props) => {
                     {formErrors.firstName.message}
                   </span>
                 )}
-                <input type="hidden" {...register("id")} />
                 <TextField
                   variant="standard"
                   margin="normal"
