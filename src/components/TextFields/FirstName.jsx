@@ -27,11 +27,13 @@ const FirstName = (props) => {
           required: "This field is required.",
         })}
       ></TextField>
-      {props.formErrors.firstName && (
-        <span className={classes.messageError}>
-          {props.formErrors.firstName.message}
-        </span>
-      )}
+      <div>
+        {props.formErrors.firstName && (
+          <span className={classes.messageError}>
+            {props.formErrors.firstName.message}
+          </span>
+        )}
+      </div>
     </div>
   );
 };

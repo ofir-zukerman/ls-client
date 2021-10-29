@@ -9,28 +9,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LastName = (props) => {
-  const classes = useStyles();
-
+const Address = (props) => {
+  const classes = useStyles(props);
   return (
     <div>
       <TextField
         variant="standard"
         margin="normal"
         fullWidth
-        id="lastName"
-        type="lastName"
-        label="Last Name"
-        name="lastName"
-        autoComplete="lastName"
-        {...props.register("lastName", {
+        id="address"
+        type="address"
+        label="Address"
+        name="address"
+        autoComplete="address"
+        {...props.register("address", {
           required: "This field is required.",
         })}
       ></TextField>
       <div>
-        {props.formErrors.lastName && (
+        {props.formErrors.address && (
           <span className={classes.messageError}>
-            {props.formErrors.lastName.message}
+            {props.formErrors.address.message}
           </span>
         )}
       </div>
@@ -38,4 +37,4 @@ const LastName = (props) => {
   );
 };
 
-export default LastName;
+export default Address;

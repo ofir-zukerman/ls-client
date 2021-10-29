@@ -45,11 +45,13 @@ const Password = (props) => {
           ),
         }}
       ></TextField>
-      {props.formErrors.password && (
-        <span className={classes.messageError}>
-          {props.formErrors.password.message}
-        </span>
-      )}
+      <div>
+        {props.formErrors.password && (
+          <span className={classes.messageError}>
+            {props.formErrors.password.message}
+          </span>
+        )}
+      </div>
     </div>
   );
 };

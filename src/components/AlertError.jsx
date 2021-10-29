@@ -10,7 +10,7 @@ const AlertError = (props) => {
           severity="error"
           onClose={() => props.setError(false)}
         >
-          You have entered invalid data, please try again.
+          {props.error}
         </Alert>
       )}
     </div>

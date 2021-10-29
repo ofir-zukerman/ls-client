@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { TextField } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import { useForm } from "react-hook-form";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import { DialogContent } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
+import AlertError from "../AlertError";
+import FirstName from "../TextFields/FirstName";
+import LastName from "../TextFields/LastName";
+import Phone from "../TextFields/Phone";
+import Address from "../TextFields/Address";
+import Role from "../TextFields/Role";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuDialogContent-root": {
@@ -30,10 +31,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     marginTop: "30px",
   },
-  messageError: {
-    margin: "0",
-    color: "red",
-  },
   divButton: {
     display: "flex",
     justifyContent: "center",
@@ -42,8 +39,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Popup = (props) => {
-  const [role, setRole] = useState("");
-  const roles = ["HR", "Devops", "Software Engineer", "QA"];
   const {
     register,
     handleSubmit,
@@ -51,10 +46,6 @@ const Popup = (props) => {
     reset,
     formState: { errors: formErrors, isDirty, isValid },
   } = useForm({ mode: "onChange" });
-
-  const handleSelectChange = (event) => {
-    setRole(event.target.value);
-  };
 
   if (props.employee) {
     setValue("startDate", props.employee.startDate);
@@ -79,6 +70,8 @@ const Popup = (props) => {
   console.log(props);
   return (
     <div>
+      <AlertError />
+
       <BootstrapDialog
         onClose={() => props.onPopupClose()}
         aria-labelledby="customized-dialog-title"
@@ -99,105 +92,12 @@ const Popup = (props) => {
 
                 <input type="hidden" {...register("id")} />
 
-                <TextField
-                  variant="standard"
-                  margin="normal"
-                  fullWidth
-                  id="firstName"
-                  type="firstName"
-                  label="First Name"
-                  name="firstName"
-                  autoComplete="firstName"
-                  {...register("firstName", {
-                    required: "This field is required.",
-                  })}
-                ></TextField>
-                {formErrors.firstName && (
-                  <span className={classes.messageError}>
-                    {formErrors.firstName.message}
-                  </span>
-                )}
-                <TextField
-                  variant="standard"
-                  margin="normal"
-                  fullWidth
-                  id="lastName"
-                  type="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="lastName"
-                  {...register("lastName", {
-                    required: "This field is required.",
-                  })}
-                ></TextField>
-                {formErrors.lastName && (
-                  <span className={classes.messageError}>
-                    {formErrors.lastName.message}
-                  </span>
-                )}
-                <TextField
-                  variant="standard"
-                  margin="normal"
-                  fullWidth
-                  id="phone"
-                  type="number"
-                  label="Phone"
-                  name="phone"
-                  autoComplete="phone"
-                  {...register("phone", {
-                    required: "This field is required.",
-                  })}
-                ></TextField>
-                {formErrors.phone && (
-                  <span className={classes.messageError}>
-                    {formErrors.phone.message}
-                  </span>
-                )}
-                <TextField
-                  variant="standard"
-                  margin="normal"
-                  fullWidth
-                  id="address"
-                  type="address"
-                  label="Address"
-                  name="address"
-                  autoComplete="address"
-                  {...register("address", {
-                    required: "This field is required.",
-                  })}
-                ></TextField>
-                {formErrors.address && (
-                  <span className={classes.messageError}>
-                    {formErrors.address.message}
-                  </span>
-                )}
-                <FormControl variant="standard" fullWidth>
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Role
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    defaultValue={role}
-                    onChange={handleSelectChange}
-                    label="Role"
-                    {...register("role", {
-                      required: "This field is required.",
-                    })}
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    {roles.map((roleSelect) => (
-                      <MenuItem value={roleSelect}>{roleSelect}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                {formErrors.role && (
-                  <span className={classes.messageError}>
-                    {formErrors.role.message}
-                  </span>
-                )}
+                <FirstName register={register} formErrors={formErrors} />
+                <LastName register={register} formErrors={formErrors} />
+                <Phone register={register} formErrors={formErrors} />
+                <Address register={register} formErrors={formErrors} />
+                <Role register={register} formErrors={formErrors} />
+
                 <div className={classes.divButton}>
                   <Button
                     className={classes.button}

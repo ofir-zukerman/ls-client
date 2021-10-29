@@ -67,7 +67,7 @@ const Login = (props) => {
       localStorageService.saveUser(response.data);
       history.push("/data-table");
     } catch (err) {
-      props.setError(err.message);
+      props.setError(`You have entered invalid data, please try again.`);
     }
   };
 

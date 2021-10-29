@@ -29,7 +29,7 @@ const RegisterForm = () => {
     <div className={classes.bodyBorder}>
       <Navbar />
       <Container component="main" maxWidth="sm">
-        <AlertError error={error} setError={setError} />
+        <AlertError error={error} setError={setError}/>
         <div className={classes.marginTop}>
           <SignUp />
           <div className={classes.marginTop}>

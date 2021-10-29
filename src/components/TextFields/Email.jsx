@@ -25,11 +25,13 @@ const Email = (props) => {
         autoComplete="email"
         {...props.register("email", { required: "This field is required." })}
       ></TextField>
-      {props.formErrors.email && (
-        <span className={classes.messageError}>
-          {props.formErrors.email.message}
-        </span>
-      )}
+      <div>
+        {props.formErrors.email && (
+          <span className={classes.messageError}>
+            {props.formErrors.email.message}
+          </span>
+        )}
+      </div>
     </div>
   );
 };

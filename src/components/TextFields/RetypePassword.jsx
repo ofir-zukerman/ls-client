@@ -45,11 +45,13 @@ const RetypePassword = (props) => {
           ),
         }}
       ></TextField>
-      {props.formErrors.retypePassword && (
-        <p className={classes.messageError}>
-          {props.formErrors.retypePassword.message}
-        </p>
-      )}
+      <div>
+        {props.formErrors.retypePassword && (
+          <p className={classes.messageError}>
+            {props.formErrors.retypePassword.message}
+          </p>
+        )}
+      </div>
     </div>
   );
 };

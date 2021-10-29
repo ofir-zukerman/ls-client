@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import { InputAdornment } from "@material-ui/core";
-import { IconButton } from "@material-ui/core";
 import axios from "axios";
 import { REGISTER_USER_API } from "../../consts";
 import { useHistory } from "react-router-dom";
@@ -17,6 +12,7 @@ import LastName from "../TextFields/LastName";
 import Email from "../TextFields/Email";
 import Password from "../TextFields/Password";
 import RetypePassword from "../TextFields/RetypePassword";
+import { string } from "yup";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -60,17 +56,34 @@ const Register = (props) => {
   const validatePassword = (password, retypePassword) =>
     password === retypePassword;
 
+  const validateFirstName = (firstName) => firstName;
+  const validateLastName = (lastName) => lastName;
+
   const history = useHistory();
 
   const classes = useStyles();
 
   const onSubmit = async (data) => {
     try {
+      const hasNumber = /\d/;
       const isValidPassword = validatePassword(
         data.password,
         data.retypePassword
       );
-      if (!isValidPassword) throw new Error("passwords not matched");
+
+      const isVaildFirstName = validateFirstName(data.firstName);
+      if (hasNumber.test(isVaildFirstName)) {
+        throw new Error("First name should have only characters");
+      }
+
+      const isVaildLastName = validateLastName(data.lastName);
+      if (hasNumber.test(isVaildLastName)) {
+        throw new Error("Last name should have only characters");
+      }
+
+      if (!isValidPassword) {
+        throw new Error("The passwords do not match");
+      }
 
       const { retypePassword, ...userData } = data;
 
@@ -78,9 +91,9 @@ const Register = (props) => {
         data: { ...userData, role: "user" },
       });
       localStorageService.saveUser(response.data);
+
       history.push("/data-table");
     } catch (err) {
-      console.error(err);
       props.setError(err.message);
     }
   };
