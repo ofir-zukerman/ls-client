@@ -9,7 +9,7 @@ import Dialog from "@mui/material/Dialog";
 import { DialogContent } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
-import AlertError from "../AlertError";
+
 import FirstName from "../TextFields/FirstName";
 import LastName from "../TextFields/LastName";
 import Phone from "../TextFields/Phone";
@@ -64,16 +64,20 @@ const Popup = (props) => {
     if (!props.employee) {
       reset();
     }
-  }, [props.onPopupClose]);
+  }, [props.popupState]);
+
+  const handleClosePopup = () => {
+    props.setSelectedEmployee(null);
+    props.setOpen(false);
+    reset();
+  };
 
   const classes = useStyles();
-  console.log(props);
+
   return (
     <div>
-      <AlertError />
-
       <BootstrapDialog
-        onClose={() => props.onPopupClose()}
+        onClose={() => handleClosePopup()}
         aria-labelledby="customized-dialog-title"
         open={props.popupState}
       >
@@ -86,7 +90,7 @@ const Popup = (props) => {
                     {props.employee ? "Edit Employee" : "Add Employee"}
                   </Typography>
                   <IconButton>
-                    <CloseIcon onClick={() => props.onPopupClose()} />
+                    <CloseIcon onClick={() => handleClosePopup()} />
                   </IconButton>
                 </div>
 

@@ -18,6 +18,7 @@ import localStorageService from "../../services/localStorage.service";
 import Avatar from "@material-ui/core/Avatar";
 import Popup from "./Popup";
 import TableComponent from "./Table/TableComponent";
+import AlertError from "../AlertError";
 
 const useStyles = makeStyles((theme) => ({
   bodyBorder: {
@@ -67,13 +68,29 @@ const DataTable = () => {
     setOpen(true);
   };
 
-  const handleClosePopup = () => {
-    setSelectedEmployee(null);
-    setOpen(false);
-  };
+  const validateFirstName = (firstName) => firstName;
+  const validateLastName = (lastName) => lastName;
+  const validatePhone = (phone) => phone;
 
   const onSubmitEmployee = async (newEmployee) => {
     try {
+      const hasNumber = /\d/;
+
+      const isVaildFirstName = validateFirstName(newEmployee.firstName);
+      if (hasNumber.test(isVaildFirstName)) {
+        throw new Error("First name should have only characters");
+      }
+
+      const isVaildLastName = validateLastName(newEmployee.lastName);
+      if (hasNumber.test(isVaildLastName)) {
+        throw new Error("Last name should have only characters");
+      }
+
+      const isVaildPhone = validatePhone(newEmployee.phone);
+      if (!hasNumber.test(isVaildPhone)) {
+        throw new Error("Phone number should have only numbers");
+      }
+
       setEmployees([...employees, newEmployee]);
 
       // update mongodb add new employee logic
@@ -121,8 +138,6 @@ const DataTable = () => {
 
   if (loading) return <div>Loading...</div>;
 
-  if (error) return <div>Get Data From Server Error!</div>;
-
   if (!user) window.location.href = "/";
 
   return (
@@ -149,6 +164,7 @@ const DataTable = () => {
       </AppBar>
       <Container component="main" maxWidth="lg">
         <div>
+          <AlertError setError={setError} error={error} />
           <div className={classes.header}>
             <Typography component="h1" variant="inherit">
               Managing Employees
@@ -167,12 +183,14 @@ const DataTable = () => {
               Add Employee
             </Button>
           </div>
+
           <Popup
             popupState={open}
             setPopupState={setOpen}
-            onPopupClose={handleClosePopup}
             employee={selectedEmployee}
             onSubmit={onSubmitEmployee}
+            setSelectedEmployee={setSelectedEmployee}
+            setOpen={setOpen}
           />
           <TableComponent
             employees={employees}
